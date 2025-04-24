@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>🔥 Live Auction Stream</title>
+    <style>
+        :root {
+            --bg-dark: #141416;
+            --card-bg: #1f1f22;
+            --font-color: #f1f1f1;
+            --color-red: #ff6b6b;
+            --color-green: #6bff95;
+            --color-blue: #6bc2ff;
+            --color-purple: #c96bff;
+            --color-yellow: #ffe66b;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Calibri', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--font-color);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            text-align: center;
+            font-size: 2.5em;
+            padding: 1rem;
+            background-color: #1a1a1d;
+            border-bottom: 1px solid #333;
+        }
+
+        #auction-timer {
+            text-align: center;
+            font-size: 2em;
+            background-color: #202024;
+            color: var(--color-green);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        #winner-bar {
+            text-align: center;
+            padding: 1em;
+            font-size: 2em;
+            background-color: #202024;
+            color: var(--color-yellow);
+            font-weight: bold;
+            border-bottom: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #winner-bar .highest-bid {
+            font-size: 2.5em;
+            color: var(--color-red);
+            font-weight: 800;
+            transition: all 0.3s ease;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        #winner-bar .auction-info {
+            font-size: 1.2em;
+            color: var(--font-color);
+            margin-top: 0.5em;
+        }
+
+        #chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2em;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 1.5em;
+        }
+
+        .chat-bubble {
+            padding: 1em 1.5em;
+            border-radius: 12px;
+            background: var(--card-bg);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            width: fit-content;
+            max-width: 70%;
+            animation: fadeInUp 0.4s ease-out;
+            font-size: 1.2em;
+            line-height: 1.5;
+        }
+
+        .username {
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 0.4em;
+        }
+
+        .timestamp {
+            display: block;
+            margin-top: 0.4em;
+            font-size: 0.85em;
+            color: #aaa;
+        }
+
+        #bid-input-area {
+            display: flex;
+            justify-content: center;
+            padding: 1.5em;
+            background: #1a1a1d;
+        }
+
+        #bid-input-area input {
+            padding: 1em;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            background: #2a2a2e;
+            color: var(--font-color);
+            width: 300px;
+            text-align: center;
+            outline: none;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        #bid-input-area input:focus {
+            box-shadow: 0 0 10px var(--color-blue);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                font-size: 1.6em;
+            }
+
+            .chat-bubble {
+                font-size: 1em;
+                max-width: 90%;
+            }
+
+            #winner-bar {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>🔥 Live Auction Bids</header>
+    <div id="winner-bar">
+        <div class="auction-info">
+            🏆 Waiting for first bid...
+        </div>
+        <div class="highest-bid">$0</div>
+    </div>
+    <div id="auction-timer"></div>
+    <div id="chat-container"></div>
+    <!-- Bid Input Field -->
+    <div id="bid-input-area">
+        <input type="number" placeholder="💰 Enter your bid..." id="bid-input">
+    </div>
+    <script>
+        const socket = new WebSocket("ws://localhost:5001");
+        let currentHighest = 0;
+
+        function getColorClass(userId) {
+            const colors = [
+                'var(--color-red)',
+                'var(--color-green)',
+                'var(--color-blue)',
+                'var(--color-purple)',
+                'var(--color-yellow)'
+            ];
+            return colors[userId % colors.length];
+        }
+
+        socket.addEventListener("message", function (event) {
+            try {
+                const data = JSON.parse(event.data);
+                const after = data.after || data;
+
+                const userId = after.user_id;
+                const auctionId = after.auction_id;
+                const highestBid = after.highest_bid;
+                const recordedAt = new Date(after.recorded_at / 1000).toLocaleTimeString();
+
+                const chatContainer = document.getElementById("chat-container");
+                const bubble = document.createElement("div");
+                bubble.className = "chat-bubble";
+
+                const usernameColor = getColorClass(userId);
+
+                bubble.innerHTML = `
+                    <span class="username" style="color: ${usernameColor}">User ${userId}</span>
+                    bid <strong>$${highestBid}</strong> on auction #${auctionId}
+                    <span class="timestamp">${recordedAt}</span>
+                `;
+                chatContainer.prepend(bubble);
+
+                // Winner bar
+                if (highestBid > currentHighest) {
+                    currentHighest = highestBid;
+                    const winnerBar = document.getElementById("winner-bar");
+                    const highestBidElement = winnerBar.querySelector(".highest-bid");
+                    const auctionInfo = winnerBar.querySelector(".auction-info");
+
+                    auctionInfo.innerHTML = `🏆 Auction #${auctionId} — Highest Bid: `;
+                    highestBidElement.textContent = `$${highestBid}`;
+                }
+            } catch (err) {
+                console.error("Error parsing bid:", err);
+            }
+        });
+
+        // Set auction end time (e.g., 1 minute from page load)
+        const AUCTION_DURATION_MINUTES = 1;
+        const auctionEndTime = Date.now() + AUCTION_DURATION_MINUTES * 60 * 1000;
+
+        function updateTimer() {
+            const now = Date.now();
+            const timeLeft = auctionEndTime - now;
+
+            const minutes = Math.floor(timeLeft / 1000 / 60);
+            const seconds = Math.floor((timeLeft / 1000) % 60);
+
+            const timerElement = document.getElementById("auction-timer");
+
+            if (timeLeft <= 0) {
+                timerElement.textContent = "⏰ Auction ended";
+                timerElement.style.color = "var(--color-red)";
+                clearInterval(timerInterval);
+            } else {
+                timerElement.textContent = `⏱ Ends in: ${minutes}m ${seconds}s`;
+            }
+        }
+
+        const timerInterval = setInterval(updateTimer, 1000);
+        updateTimer(); // Initial call
+    </script>
+</body>
+
+</html>
