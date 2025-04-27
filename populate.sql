@@ -69,9 +69,9 @@ INSERT INTO auctions (title, description) VALUES ('Art Auction', 'Auction for va
 ('Gitara Fender', 'Original Fender Stratocaster, kao nov');
 
 -- Insert bids
-INSERT INTO bids (auction_id, user_id, bid_amount) VALUES (1, 1, 100);
-INSERT INTO bids (auction_id, user_id, bid_amount) VALUES (1, 2, 150);
-INSERT INTO bids (auction_id, user_id, bid_amount) VALUES (1, 3, 200);
-INSERT INTO bids (auction_id, user_id, bid_amount) VALUES (2, 1, 300);
-INSERT INTO bids (auction_id, user_id, bid_amount) VALUES (2, 2, 250);
-INSERT INTO bids (auction_id, user_id, bid_amount) VALUES (3, 1, 400);
+INSERT INTO bids (auction_id, user_id, bid_amount) VALUES (1, 1, 10);
+INSERT INTO bids (auction_id, user_id, bid_amount) VALUES (1, 2, 15);
+INSERT INTO bids (auction_id, user_id, bid_amount) VALUES (1, 3, 20);
+INSERT INTO bids (auction_id, user_id, bid_amount) VALUES (2, 1, 30);
+INSERT INTO bids (auction_id, user_id, bid_amount) VALUES (2, 2, 25);
+INSERT INTO bids (auction_id, user_id, bid_amount) VALUES (3, 1, 40);
