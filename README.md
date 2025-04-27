@@ -21,7 +21,10 @@ kcat -b localhost:9093 -L|grep topic
 ```sh
 psql -U postgres -h localhost -d postgres
 ```
-
+```sh
+sed -i 's/key.converter.schemas.enable=true/key.converter.schemas.enable=false/' connect-distributed.properties
+sed -i 's/value.converter.schemas.enable=true/value.converter.schemas.enable=false/' connect-distributed.properties
+```
 ```sql
 -- Check the top_bids table to see the highest bid for auction 1
 SELECT * FROM top_bids WHERE auction_id = 1;
