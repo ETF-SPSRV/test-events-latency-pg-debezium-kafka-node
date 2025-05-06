@@ -1,8 +1,28 @@
 const express = require('express');
 const { Kafka } = require('kafkajs');
-
+const cors = require('cors');
+const pool = require('./db');
 const app = express();
 const PORT = 5000;
+
+app.use(cors());
+app.use(express.json());
+
+app.post('/bid', async (req, res) => {
+    const { auction_id, user_id, bid_amount } = req.body;
+    try {
+        const result = await pool.query(
+            `INSERT INTO bids (auction_id, user_id, bid_amount, created_at)
+             VALUES ($1, $2, $3, NOW()) RETURNING *`,
+            [auction_id, user_id, bid_amount]
+        );
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'DB insert failed' });
+    }
+});
+
 
 let latestHighestBid = null;
 

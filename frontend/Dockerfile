@@ -4,6 +4,8 @@ FROM nginx:alpine
 # Copy your static site content into Nginx's web root
 COPY ./index.html /usr/share/nginx/html/index.html
 
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+
 # Optional: Copy custom nginx config (if needed)
 # COPY nginx.conf /etc/nginx/nginx.conf
 

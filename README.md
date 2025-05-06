@@ -21,6 +21,14 @@ kcat -b localhost:9093 -L|grep topic
 ```sh
 psql -U postgres -h localhost -d postgres
 ```
+
+## insert bids
+
+```sh
+npm i
+node insert-bids.js
+```
+
 ```sh
 sed -i 's/key.converter.schemas.enable=true/key.converter.schemas.enable=false/' connect-distributed.properties
 sed -i 's/value.converter.schemas.enable=true/value.converter.schemas.enable=false/' connect-distributed.properties

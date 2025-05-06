@@ -64,7 +64,7 @@ INSERT INTO users (username) VALUES ('Alice'), ('Bob'), ('Mirza'), ('Ajla'), ('N
 INSERT INTO auctions (title, description) VALUES ('Art Auction', 'Auction for valuable art pieces'),
 ('Car Auction', 'Auction for classic cars'),
 ('Watch Auction', 'Auction for luxury watches'),
-('Guitar Auction', 'Auction for vintage guitars');
+('Guitar Auction', 'Auction for vintage guitars'),
 ('Vintage Sat', 'Omega Speedmaster iz 1972. godine'),
 ('Gitara Fender', 'Original Fender Stratocaster, kao nov');
 

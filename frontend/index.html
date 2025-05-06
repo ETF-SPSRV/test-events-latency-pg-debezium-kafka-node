@@ -254,7 +254,33 @@
 
         const timerInterval = setInterval(updateTimer, 1000);
         updateTimer(); // Initial call
+
+        const bidInput = document.getElementById("bid-input");
+
+        bidInput.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                const bid_amount = parseFloat(bidInput.value);
+                if (!isNaN(bid_amount) && bid_amount > 0) {
+                    fetch("/bid", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            auction_id: 1,
+                            user_id: Math.floor(Math.random() * 5) + 1, // Replace with real user auth
+                            bid_amount: bid_amount // hardcoded or dynamic
+                        })
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log("Bid submitted:", data);
+                            bidInput.value = "";
+                        })
+                        .catch(err => console.error("Error submitting bid:", err));
+                }
+            }
+        });
     </script>
+
 </body>
 
 </html>
