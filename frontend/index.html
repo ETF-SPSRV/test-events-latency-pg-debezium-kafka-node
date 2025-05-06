@@ -178,7 +178,12 @@
         <input type="number" placeholder="💰 Enter your bid..." id="bid-input">
     </div>
     <script>
-        const socket = new WebSocket("ws://localhost:5001");
+        // const socket = new WebSocket("ws://localhost:5001");
+        const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+        const host = window.location.hostname;
+        const port = "5001"; // Or use process.env.PORT if bundled with something like Webpack/Vite
+        const socket = new WebSocket(`${protocol}://${host}:${port}`);
+
         let currentHighest = 0;
 
         function getColorClass(userId) {

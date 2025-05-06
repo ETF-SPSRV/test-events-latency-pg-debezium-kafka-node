@@ -41,7 +41,7 @@ async function insertRealisticBid() {
     console.log(`💸 Auction #${auctionId}: $${newBid} by user ${userId}`);
 }
 
-async function runLoadTest(count = 5000, delay = 1500) {
+async function runLoadTest(count = 5000, delay = 500) {
     for (let i = 0; i < count; i++) {
         await insertRealisticBid();
         await new Promise((res) => setTimeout(res, delay));

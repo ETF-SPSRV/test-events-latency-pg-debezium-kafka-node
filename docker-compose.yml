@@ -33,6 +33,8 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./db/populate.sql:/docker-entrypoint-initdb.d/populate.sql
 
   connect:
     image: quay.io/debezium/connect:3.1
@@ -68,3 +70,12 @@ services:
       - 8081:80
     depends_on:
       - backend
+
+  curl-runner:
+    image: curlimages/curl:latest
+    depends_on:
+      - connect
+    volumes:
+      - ./curl-runner/register-postgres.json:/config/register-postgres.json
+      - ./curl-runner/entrypoint.sh:/entrypoint.sh
+    entrypoint: [ "/bin/sh", "/entrypoint.sh" ]
