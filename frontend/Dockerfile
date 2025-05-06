@@ -1,13 +1,21 @@
-# Use the official Nginx image as a base
+# Stage 1: Build the application
+FROM node:alpine AS builder
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+# Stage 2: Serve the application with NGINX
 FROM nginx:alpine
 
-# Copy your static site content into Nginx's web root
-COPY ./index.html /usr/share/nginx/html/index.html
+COPY --from=builder /app/build /usr/share/nginx/html
 
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Optional: Copy custom nginx config (if needed)
-# COPY nginx.conf /etc/nginx/nginx.conf
-
-# Expose port 80
 EXPOSE 80

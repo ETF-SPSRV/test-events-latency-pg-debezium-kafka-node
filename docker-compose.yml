@@ -67,14 +67,6 @@ services:
     build:
       context: ./frontend
     ports:
-      - 8081:80
-    depends_on:
-      - backend
-
-  reactapp:
-    build:
-      context: ./reactapp
-    ports:
       - 3000:80
     depends_on:
       - backend
