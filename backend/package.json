@@ -5,8 +5,8 @@
     "express": "^5.1.0",
     "faker": "^6.6.6",
     "kafkajs": "^2.2.4",
-    "pg": "^8.15.5",
-    "ws": "^8.18.1"
+    "pg": "^8.15.6",
+    "ws": "^8.18.2"
   },
   "scripts": {
     "start": "node server.js"
