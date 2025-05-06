@@ -1,12 +1,8 @@
--- 1. KREIRANJE TABELA
-
--- USERS (korisnici koji prave ponude)
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username TEXT NOT NULL UNIQUE
 );
 
--- AUCTIONS (aukcije na kojima se prave ponude)
 CREATE TABLE auctions (
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
@@ -14,7 +10,6 @@ CREATE TABLE auctions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- BIDS (ponude koje korisnici daju na aukcijama)
 CREATE TABLE bids (
     id SERIAL PRIMARY KEY,
     auction_id INT NOT NULL REFERENCES auctions(id),
@@ -23,7 +18,6 @@ CREATE TABLE bids (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- TOP BIDS (historija top ponuda po aukciji)
 CREATE TABLE top_bids (
     id SERIAL PRIMARY KEY,
     auction_id INT NOT NULL,
@@ -32,15 +26,12 @@ CREATE TABLE top_bids (
     recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
 CREATE OR REPLACE FUNCTION update_top_bid()
 RETURNS TRIGGER AS $$
 BEGIN
-    -- Check if the new bid is the highest for this auction
     PERFORM 1 FROM top_bids
     WHERE auction_id = NEW.auction_id AND highest_bid >= NEW.bid_amount;
 
-    -- If no record is found (i.e., the new bid is the highest), insert it into the top_bids table
     IF NOT FOUND THEN
         INSERT INTO top_bids (auction_id, highest_bid, user_id)
         VALUES (NEW.auction_id, NEW.bid_amount, NEW.user_id);
@@ -56,11 +47,8 @@ AFTER INSERT ON bids
 FOR EACH ROW
 EXECUTE FUNCTION update_top_bid();
 
-
--- Insert some sample users
 INSERT INTO users (username) VALUES ('Alice'), ('Bob'), ('Mirza'), ('Ajla'), ('Nedim');
 
--- Insert an auction
 INSERT INTO auctions (title, description) VALUES ('Art Auction', 'Auction for valuable art pieces'),
 ('Car Auction', 'Auction for classic cars'),
 ('Watch Auction', 'Auction for luxury watches'),
@@ -68,7 +56,6 @@ INSERT INTO auctions (title, description) VALUES ('Art Auction', 'Auction for va
 ('Vintage Sat', 'Omega Speedmaster iz 1972. godine'),
 ('Gitara Fender', 'Original Fender Stratocaster, kao nov');
 
--- Insert bids
 INSERT INTO bids (auction_id, user_id, bid_amount) VALUES (1, 1, 10);
 INSERT INTO bids (auction_id, user_id, bid_amount) VALUES (1, 2, 15);
 INSERT INTO bids (auction_id, user_id, bid_amount) VALUES (1, 3, 20);
