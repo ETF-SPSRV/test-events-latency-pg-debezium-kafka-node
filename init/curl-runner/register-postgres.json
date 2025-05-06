@@ -1,5 +1,5 @@
 {
-    "name": "pg_auction",
+    "name": "pg_conn",
     "config": {
         "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
         "tasks.max": "1",

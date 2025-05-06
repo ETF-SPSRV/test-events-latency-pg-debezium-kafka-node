@@ -34,7 +34,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - ./db/populate.sql:/docker-entrypoint-initdb.d/populate.sql
+      - ./init/db/populate.sql:/docker-entrypoint-initdb.d/populate.sql
 
   connect:
     image: quay.io/debezium/connect:3.1
@@ -76,6 +76,6 @@ services:
     depends_on:
       - connect
     volumes:
-      - ./curl-runner/register-postgres.json:/config/register-postgres.json
-      - ./curl-runner/entrypoint.sh:/entrypoint.sh
+      - ./init/curl-runner/register-postgres.json:/config/register-postgres.json
+      - ./init/curl-runner/entrypoint.sh:/entrypoint.sh
     entrypoint: [ "/bin/sh", "/entrypoint.sh" ]
