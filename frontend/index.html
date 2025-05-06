@@ -160,6 +160,22 @@
                 font-size: 1.1em;
             }
         }
+
+        @keyframes puffOut {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1.2);
+            }
+        }
+
+        .chat-bubble.puff-out {
+            animation: puffOut 0.4s forwards;
+        }
     </style>
 </head>
 
@@ -218,8 +234,13 @@
                     bid <strong>$${highestBid}</strong> on auction #${auctionId}
                     <span class="timestamp">${recordedAt}</span>
                 `;
+                const bubbles = chatContainer.querySelectorAll(".chat-bubble");
+                if (bubbles.length >= 3) {
+                    const oldest = bubbles[bubbles.length - 1];
+                    oldest.classList.add("puff-out");
+                    setTimeout(() => oldest.remove(), 400); // wait for animation to finish
+                }
                 chatContainer.prepend(bubble);
-
                 // Winner bar
                 if (highestBid > currentHighest) {
                     currentHighest = highestBid;

@@ -9,8 +9,8 @@ const pool = new Pool({
     port: 5432,
 });
 
-const AUCTION_IDS = [1, 2, 3];
-// const AUCTION_IDS = [1];
+// const AUCTION_IDS = [1, 2, 3];
+const AUCTION_IDS = [1];
 const USER_IDS = [1, 2, 3, 4, 5];
 
 // We'll store current bid state in memory
@@ -41,7 +41,7 @@ async function insertRealisticBid() {
     console.log(`💸 Auction #${auctionId}: $${newBid} by user ${userId}`);
 }
 
-async function runLoadTest(count = 5000, delay = 500) {
+async function runLoadTest(count = 5000, delay = 1000) {
     for (let i = 0; i < count; i++) {
         await insertRealisticBid();
         await new Promise((res) => setTimeout(res, delay));
