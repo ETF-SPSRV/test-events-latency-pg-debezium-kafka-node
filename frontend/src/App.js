@@ -12,8 +12,8 @@ const App = () => {
   useEffect(() => {
     const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
     const host = window.location.hostname;
-    const port = '5001';
-    socketRef.current = new WebSocket(`${protocol}://${host}:${port}`);
+    // const port = '5001';
+    socketRef.current = new WebSocket(`${protocol}://${host}/ws`);
 
     socketRef.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
