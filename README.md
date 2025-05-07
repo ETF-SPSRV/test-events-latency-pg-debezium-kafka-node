@@ -19,7 +19,6 @@ npm i
 node insert-bids.js
 ```
 
-
 ## tail kafka topic
 
 ```sh

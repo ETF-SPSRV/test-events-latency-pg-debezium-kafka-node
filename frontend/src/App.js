@@ -9,39 +9,6 @@ const App = () => {
   const [highestBid, setHighestBid] = useState(0);
   const socketRef = useRef(null);
 
-  // useEffect(() => {
-  //   const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-  //   const host = window.location.hostname;
-  //   // const port = '5001';
-  //   socketRef.current = new WebSocket(`${protocol}://${host}/ws`);
-
-  //   socketRef.current.onmessage = (event) => {
-  //     const data = JSON.parse(event.data);
-  //     const after = data.after || data;
-
-  //     const newBid = {
-  //       id: Date.now(),
-  //       userId: after.user_id,
-  //       auctionId: after.auction_id,
-  //       amount: after.highest_bid,
-  //       timestamp: new Date(after.recorded_at / 1000).toLocaleTimeString(),
-  //     };
-
-  //     setBids((prev) => {
-  //       const updated = [newBid, ...prev];
-  //       return updated.slice(0, 3);
-  //     });
-
-  //     if (after.highest_bid > highestBid) {
-  //       setHighestBid(after.highest_bid);
-  //     }
-  //   };
-
-  //   return () => {
-  //     if (socketRef.current) socketRef.current.close();
-  //   };
-  // }, [highestBid]);
-
   useEffect(() => {
     const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
     const host = window.location.hostname;
