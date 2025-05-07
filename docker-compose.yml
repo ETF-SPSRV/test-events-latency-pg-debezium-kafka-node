@@ -61,6 +61,7 @@ services:
       - 5001:5001
     depends_on:
       - kafka
+      - connect
       - postgres
 
   frontend:
