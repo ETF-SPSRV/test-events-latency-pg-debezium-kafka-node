@@ -63,6 +63,7 @@ services:
       - kafka
       - connect
       - postgres
+      - curl-runner
 
   frontend:
     build:
