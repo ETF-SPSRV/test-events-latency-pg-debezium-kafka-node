@@ -64,15 +64,6 @@ services:
       - connect
       - postgres
       - curl-runner
-
-  frontend:
-    build:
-      context: ./frontend
-    ports:
-      - 80:80
-    depends_on:
-      - backend
-
   curl-runner:
     image: curlimages/curl:latest
     depends_on:
