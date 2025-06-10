@@ -15,7 +15,19 @@ async function run() {
     await consumer.run({
         eachMessage: async ({ message }) => {
             const value = JSON.parse(message.value.toString());
+            console.log('Incoming Kafka message:', value);
+
+            if (!value.trace_created_at) {
+                console.warn('Missing trace_created_at in message:', value);
+                return;
+            }
+
             const createdAt = new Date(value.trace_created_at).getTime();
+            if (isNaN(createdAt)) {
+                console.warn('Invalid trace_created_at timestamp:', value.trace_created_at);
+                return;
+            }
+
             const now = Date.now();
             const latency = now - createdAt;
 

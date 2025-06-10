@@ -26,5 +26,5 @@ kcat -b localhost:9093 -L|grep topic
 ```
 
 ```sh
-kcat -b localhost:9093 -t auction.public.top_bids -C
+kcat -b localhost:9093 -t test_events.public.test_events -C
 ```
