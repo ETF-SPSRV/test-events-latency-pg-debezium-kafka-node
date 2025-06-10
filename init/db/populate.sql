@@ -5,4 +5,4 @@ CREATE TABLE test_events (
 );
 
 INSERT INTO test_events (message, trace_created_at)
-VALUES ('Test message', now());
+VALUES ('First Test message', now());
