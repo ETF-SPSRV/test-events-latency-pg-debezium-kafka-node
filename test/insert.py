@@ -12,7 +12,7 @@ auction_state = {
 }
 
 conn = psycopg2.connect(
-    host="157.230.31.228",
+    host="165.232.114.62",
     database="postgres",
     user="postgres",
     password="postgres",

@@ -10,7 +10,7 @@ auction_state = {1: 100}
 
 # DB config
 DB_CONFIG = {
-    "host": "157.230.31.228",
+    "host": "165.232.114.62",
     "database": "postgres",
     "user": "postgres",
     "password": "postgres",
