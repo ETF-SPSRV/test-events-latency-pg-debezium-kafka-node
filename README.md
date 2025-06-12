@@ -40,8 +40,8 @@ pip install psycopg2-binary faker
 ### run inserts
 
 ```sh
-python3 standard_test_events.py
-python3 fast_test_events_generation.py
+python3 test/standard_test_events.py
+python3 test/fast_test_events_generation.py
 ```
 
 ## backend logs
