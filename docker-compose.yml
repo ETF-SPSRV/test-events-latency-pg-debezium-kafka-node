@@ -54,7 +54,9 @@ services:
       - STATUS_STORAGE_TOPIC=my_connect_statuses
 
   backend:
-    image: ghcr.io/etf-spsrv/test-events-latency-pg-debezium-kafka-node-backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     depends_on:
       - kafka
       - connect
