@@ -1,25 +1,14 @@
 {
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "faker": "^6.6.6",
-    "kafkajs": "^2.2.4",
-    "morgan": "^1.10.0",
-    "pg": "^8.15.6",
-    "ws": "^8.18.2"
+    "kafkajs": "^2.2.4"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "name": "backend",
   "version": "1.0.0",
-  "main": "server.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "@faker-js/faker": "^9.7.0"
-  }
+  "main": "index.js",
+  "description": "Backend service for Kafka message processing",
+  "author": "A K",
+  "license": "MIT"
 }
