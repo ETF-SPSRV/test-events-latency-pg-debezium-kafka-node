@@ -54,8 +54,7 @@ services:
       - STATUS_STORAGE_TOPIC=my_connect_statuses
 
   backend:
-    build:
-      context: ./backend
+    image: ghcr.io/etf-spsrv/test-events-latency-pg-debezium-kafka-node-backend:latest
     depends_on:
       - kafka
       - connect
