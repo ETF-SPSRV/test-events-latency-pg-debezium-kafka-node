@@ -1,0 +1,1 @@
+INSERT INTO test_events (message) VALUES ('Benchmark test message');
