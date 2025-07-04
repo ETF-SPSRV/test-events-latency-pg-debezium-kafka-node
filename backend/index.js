@@ -1,8 +1,9 @@
 const { Kafka } = require('kafkajs');
+const fs = require('fs');
 
 const kafka = new Kafka({
     clientId: 'latency-tester',
-    brokers: ['kafka:9092']
+    brokers: ['<KAFKA-IP-ADDRESS/SERVICE>:9093']
 });
 
 const topic = 'test_events.public.test_events';
@@ -10,7 +11,7 @@ const consumer = kafka.consumer({ groupId: 'latency-measure-group' });
 
 async function run() {
     await consumer.connect();
-    await consumer.subscribe({ topic, fromBeginning: true });
+    await consumer.subscribe({ topic, fromBeginning: false });
 
     await consumer.run({
         eachMessage: async ({ message }) => {
@@ -31,7 +32,12 @@ async function run() {
             const now = Date.now();
             const latency = now - createdAt;
 
-            console.log(`Latency: ${latency} ms | Message: ${value.message}`);
+            //fs.appendFileSync('latency_raw.txt', `${latency}\n`);
+            fs.appendFileSync('/app/logs/latency_raw.txt', `${latency}\n`);
+
+
+            // console.log(`Latency: ${latency} ms | Message: ${value.message}`);
+            console.log(latency);
         },
     });
 }

@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: quay.io/debezium/example-postgres:3.1
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./init/db/populate.sql:/docker-entrypoint-initdb.d/populate.sql
+
+  connect:
+    image: quay.io/debezium/connect:3.1
+    extra_hosts:
+      - "kafka:<KAFKA-IP-ADDRESS/SERVICE>"
+    ports:
+      - 8083:8083
+    depends_on:
+      - postgres
+    links:
+      - postgres
+    environment:
+      - BOOTSTRAP_SERVERS=<KAFKA-IP-ADDRESS/SERVICE>:9093
+      - GROUP_ID=1
+      - CONFIG_STORAGE_TOPIC=my_connect_configs
+      - OFFSET_STORAGE_TOPIC=my_connect_offsets
+      - STATUS_STORAGE_TOPIC=my_connect_statuses
+  curl-runner:
+    image: curlimages/curl:latest
+    depends_on:
+      - connect
+    volumes:
+      - ./init/curl-runner/register-postgres.json:/config/register-postgres.json
+      - ./init/curl-runner/entrypoint.sh:/entrypoint.sh
+    entrypoint: ["/bin/sh", "/entrypoint.sh"]
